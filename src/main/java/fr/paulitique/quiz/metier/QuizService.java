@@ -47,4 +47,10 @@ public class QuizService {
 		
 	}
 	
+	public List<Quiz> getAllQuiz() {
+		
+		return quizDAO.findAll();
+		
+	}
+	
 }

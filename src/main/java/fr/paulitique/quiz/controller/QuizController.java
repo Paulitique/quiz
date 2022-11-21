@@ -60,4 +60,25 @@ public class QuizController {
 		
 	}
 	
+	@GetMapping("/quiz/getAll")
+	public List<QuizDTO> getAllQuiz() {
+		
+		List<Quiz> list = new ArrayList<Quiz>();
+		
+		List<QuizDTO> listDTO = new ArrayList<QuizDTO>();
+		
+		list = quizService.getAllQuiz();
+		
+		for (Quiz q : list) {
+			
+			QuizDTO convertedQuizDTO = quizMapper.entityToDTO(q);
+			
+			listDTO.add(convertedQuizDTO);
+			
+		}
+		
+		return listDTO;
+		
+	}
+	
 }
