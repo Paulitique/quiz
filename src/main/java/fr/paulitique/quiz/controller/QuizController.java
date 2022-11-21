@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
@@ -43,6 +44,19 @@ public class QuizController {
 		Integer id = Integer.parseInt(quizId);
 		
 		quizService.deleteQuiz(id);
+		
+	}
+	
+	@GetMapping("/quiz/{quizId}/get")
+	public QuizDTO getQuiz(@PathVariable String quizId) {
+		
+		Integer id = Integer.parseInt(quizId);
+		
+		Quiz consultedQuiz = quizService.getQuiz(id);
+		
+		QuizDTO createdQuizDTO = quizMapper.entityToDTO(consultedQuiz);
+		
+		return createdQuizDTO;
 		
 	}
 	

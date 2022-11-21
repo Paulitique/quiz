@@ -38,4 +38,13 @@ public class QuizService {
 		quizDAO.delete(quiz);
 
 	}
+	
+	public Quiz getQuiz(Integer id) {
+		
+		Quiz consultedQuiz = quizDAO.findQuizById(id);
+		
+		return consultedQuiz;
+		
+	}
+	
 }
