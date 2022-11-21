@@ -35,5 +35,7 @@ public class QuizController {
 		return createdQuizDTO;
 	}
 	
+	//delete endpoint
+	
 	
 }
