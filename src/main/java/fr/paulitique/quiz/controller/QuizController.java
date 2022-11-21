@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,12 +37,12 @@ public class QuizController {
 		return createdQuizDTO;
 	}
 	
-	@DeleteMapping("/deleteQuiz")
-	public void deleteQuiz(@RequestBody QuizDTO quizDTO) {
+	@DeleteMapping("/quiz/{quizId}/delete")
+	public void deleteQuiz(@PathVariable String quizId) {
 		
-		Quiz quiz = quizMapper.DTOToEntity(quizDTO);
+		Integer id = Integer.parseInt(quizId);
 		
-		quizService.deleteQuiz(quiz);
+		quizService.deleteQuiz(id);
 		
 	}
 	

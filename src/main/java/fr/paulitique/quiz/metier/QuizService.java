@@ -1,6 +1,7 @@
 package fr.paulitique.quiz.metier;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,10 +31,10 @@ public class QuizService {
 		return quizDAO.findAll();
 	}
 	
-	public void deleteQuiz(Quiz quiz) {
+	public void deleteQuiz(Integer id) {
 		
 		//TODO: Add confirmation step ?
-		
+		Quiz quiz = quizDAO.findQuizById(id);
 		quizDAO.delete(quiz);
 
 	}
