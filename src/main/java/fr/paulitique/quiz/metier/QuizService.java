@@ -29,6 +29,4 @@ public class QuizService {
 		
 		return quizDAO.findAll();
 	}
-	
-	//delete service
 }
