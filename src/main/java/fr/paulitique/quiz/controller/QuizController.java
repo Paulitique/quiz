@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import fr.paulitique.quiz.dto.QuizDTO;
 import fr.paulitique.quiz.mapper.QuizMapper;
@@ -36,6 +37,13 @@ public class QuizController {
 	}
 	
 	//delete endpoint
-	
+	@DeleteMapping("/delete")
+	public void deleteQuiz(@RequestBody QuizDTO quizDTO) {
+		
+		Quiz quiz = quizMapper.DTOToEntity(quizDTO);
+		
+		quizService.deleteQuiz(quiz);
+		
+	}
 	
 }
