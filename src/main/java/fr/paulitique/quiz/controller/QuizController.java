@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.paulitique.quiz.dto.QuizDTO;
@@ -33,6 +34,18 @@ public class QuizController {
 		QuizDTO createdQuizDTO = quizMapper.entityToDTO(createdQuiz);
 		
 		return createdQuizDTO;
+	}
+	
+	@PutMapping("/quiz")
+	public QuizDTO modifyQuiz(@RequestBody QuizDTO quizDTO ) {
+		
+		Quiz quiz = quizMapper.DTOToEntity(quizDTO);
+		
+		Quiz modifiedQuiz = quizService.modifyQuiz(quiz);
+		
+		QuizDTO modifiedQuizDTO = quizMapper.entityToDTO(modifiedQuiz);
+		
+		return modifiedQuizDTO;
 	}
 	
 	

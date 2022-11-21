@@ -21,12 +21,23 @@ public class QuizService {
 		quiz.setId(null);
 		Quiz savedQuiz = quizDAO.save(quiz);
 		
-		
 		return savedQuiz;
 	}
 	
 	public List<Quiz> findQuizList() {
 		
 		return quizDAO.findAll();
+	}
+	
+	public Quiz modifyQuiz(Quiz quiz) {
+		
+		Quiz savedQuiz = quizDAO.findQuizById( quiz.getId() );
+		
+		savedQuiz.setName( quiz.getName() );
+		savedQuiz.setDescription( quiz.getDescription() );
+		
+		savedQuiz = quizDAO.save(savedQuiz);
+		
+		return savedQuiz;
 	}
 }
