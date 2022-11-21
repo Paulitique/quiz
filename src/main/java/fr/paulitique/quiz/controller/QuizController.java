@@ -36,8 +36,7 @@ public class QuizController {
 		return createdQuizDTO;
 	}
 	
-	//delete endpoint
-	@DeleteMapping("/delete")
+	@DeleteMapping("/deleteQuiz")
 	public void deleteQuiz(@RequestBody QuizDTO quizDTO) {
 		
 		Quiz quiz = quizMapper.DTOToEntity(quizDTO);
