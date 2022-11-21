@@ -29,4 +29,12 @@ public class QuizService {
 		
 		return quizDAO.findAll();
 	}
+	
+	public void deleteQuiz(Quiz quiz) {
+		
+		//TODO: Add confirmation step ?
+		
+		quizDAO.delete(quiz);
+
+	}
 }
