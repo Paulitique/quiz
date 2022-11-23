@@ -37,7 +37,7 @@ public class QuizController {
 		
 		return createdQuizDTO;
 	}
-	
+
 	@DeleteMapping("/quiz/{quizId}/delete")
 	public void deleteQuiz(@PathVariable String quizId) {
 		
@@ -79,6 +79,17 @@ public class QuizController {
 		
 		return listDTO;
 		
+	}
+	@PutMapping("/quiz")
+	public QuizDTO modifyQuiz(@RequestBody QuizDTO quizDTO ) {
+		
+		Quiz quiz = quizMapper.DTOToEntity(quizDTO);
+		
+		Quiz modifiedQuiz = quizService.modifyQuiz(quiz);
+		
+		QuizDTO modifiedQuizDTO = quizMapper.entityToDTO(modifiedQuiz);
+		
+		return modifiedQuizDTO;
 	}
 	
 }
