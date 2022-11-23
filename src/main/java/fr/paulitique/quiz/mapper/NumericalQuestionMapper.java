@@ -22,8 +22,8 @@ public class NumericalQuestionMapper {
 		return questionDTO;
 	}
 	
-	public Question DTOToEntity(NumericalQuestionDTO questionDTO) {
-		Question question = new NumericalQuestion();
+	public NumericalQuestion DTOToEntity(NumericalQuestionDTO questionDTO) {
+		NumericalQuestion question = new NumericalQuestion();
 		//need to have a separate Mapper for each type of concrete question because of this line 
 		
 		question.setId(questionDTO.getId());

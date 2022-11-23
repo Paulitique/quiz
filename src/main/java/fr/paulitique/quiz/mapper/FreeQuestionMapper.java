@@ -23,8 +23,8 @@ public class FreeQuestionMapper {
 		return questionDTO;
 	}
 	
-	public Question DTOToEntity(FreeQuestionDTO questionDTO) {
-		Question question = new FreeQuestion();
+	public FreeQuestion DTOToEntity(FreeQuestionDTO questionDTO) {
+		FreeQuestion question = new FreeQuestion();
 		//need to have a separate Mapper for each type of concrete question because of this line 
 		
 		question.setId(questionDTO.getId());

@@ -23,8 +23,8 @@ public class UniqueChoiceQuestionMapper {
 		return questionDTO;
 	}
 	
-	public Question DTOToEntity(UniqueChoiceQuestionDTO questionDTO) {
-		Question question = new UniqueChoiceQuestion();
+	public UniqueChoiceQuestion DTOToEntity(UniqueChoiceQuestionDTO questionDTO) {
+		UniqueChoiceQuestion question = new UniqueChoiceQuestion();
 		//need to have a separate Mapper for each type of concrete question because of this line 
 		
 		question.setId(questionDTO.getId());

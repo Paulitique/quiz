@@ -23,8 +23,8 @@ public class MultipleChoiceQuestionMapper {
 		return questionDTO;
 	}
 	
-	public Question DTOToEntity(MultipleChoiceQuestionDTO questionDTO) {
-		Question question = new MultipleChoiceQuestion();
+	public MultipleChoiceQuestion DTOToEntity(MultipleChoiceQuestionDTO questionDTO) {
+		MultipleChoiceQuestion question = new MultipleChoiceQuestion();
 		//need to have a separate Mapper for each type of concrete question because of this line 
 		
 		question.setId(questionDTO.getId());
