@@ -23,4 +23,14 @@ public class QuestionService {
 		
 		return savedQuestion;
 	}
+	
+	
+	
+	public void deleteQuestion(Integer id) {
+		
+		//TODO: Add confirmation step ?
+		Question question = questionDAO.findQuestionById(id);
+		questionDAO.delete(question);
+
+	}
 }
