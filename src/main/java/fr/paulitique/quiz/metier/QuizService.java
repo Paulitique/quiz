@@ -54,12 +54,12 @@ public class QuizService {
 	
 	public Quiz modifyQuiz(Quiz quiz) {
 		
-		Quiz savedQuiz = quizDAO.findQuizById( quiz.getId() );
+		Quiz storedQuiz = quizDAO.findQuizById(quiz.getId());
 		
-		savedQuiz.setName( quiz.getName() );
-		savedQuiz.setDescription( quiz.getDescription() );
+		storedQuiz.setName(storedQuiz.getName());
+		storedQuiz.setDescription(storedQuiz.getDescription());
 		
-		savedQuiz = quizDAO.save(savedQuiz);
+		Quiz savedQuiz = quizDAO.save(storedQuiz);
 		
 		return savedQuiz;
 	}

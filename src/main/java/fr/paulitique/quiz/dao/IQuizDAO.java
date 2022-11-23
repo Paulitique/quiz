@@ -6,6 +6,6 @@ import fr.paulitique.quiz.model.Quiz;
 
 public interface IQuizDAO extends JpaRepository<Quiz, Integer>{
 
-Quiz findQuizById(Integer id);
+	Quiz findQuizById(Integer id);
 
 }

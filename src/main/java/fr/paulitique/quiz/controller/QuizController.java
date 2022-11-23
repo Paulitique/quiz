@@ -26,7 +26,7 @@ public class QuizController {
 	@Autowired
 	private QuizMapper quizMapper;
 	
-	@PostMapping("/quiz")
+	@PostMapping("/api/quiz")
 	public QuizDTO createQuiz(@RequestBody QuizDTO quizDTO) {
 		
 		Quiz quiz = quizMapper.DTOToEntity(quizDTO);
@@ -38,7 +38,7 @@ public class QuizController {
 		return createdQuizDTO;
 	}
 
-	@DeleteMapping("/quiz/{quizId}/delete")
+	@DeleteMapping("/api/quiz/{quizId}")
 	public void deleteQuiz(@PathVariable String quizId) {
 		
 		Integer id = Integer.parseInt(quizId);
@@ -47,37 +47,29 @@ public class QuizController {
 		
 	}
 	
-	@GetMapping("/quiz/{quizId}/get")
+	@GetMapping("/api/quiz/{quizId}")
 	public QuizDTO getQuiz(@PathVariable String quizId) {
 		
 		Integer id = Integer.parseInt(quizId);
 		
-		Quiz consultedQuiz = quizService.getQuiz(id);
+		Quiz quiz = quizService.getQuiz(id);
 		
-		QuizDTO createdQuizDTO = quizMapper.entityToDTO(consultedQuiz);
+		QuizDTO quizDTO = quizMapper.entityToDTO(quiz);
 		
-		return createdQuizDTO;
+		return quizDTO;
 		
 	}
 	
-	@GetMapping("/quiz/getAll")
+	@GetMapping("/api/quiz/getAll")
 	public List<QuizDTO> getAllQuiz() {
 		
-		List<Quiz> list = new ArrayList<Quiz>();
+		List<QuizDTO> quizDTOList = new ArrayList<QuizDTO>();
 		
-		List<QuizDTO> listDTO = new ArrayList<QuizDTO>();
+		List<Quiz> quizList = quizService.getAllQuiz();
 		
-		list = quizService.getAllQuiz();
+		quizList.forEach(quiz -> quizDTOList.add(quizMapper.entityToDTO(quiz)));
 		
-		for (Quiz q : list) {
-			
-			QuizDTO convertedQuizDTO = quizMapper.entityToDTO(q);
-			
-			listDTO.add(convertedQuizDTO);
-			
-		}
-		
-		return listDTO;
+		return quizDTOList;
 		
 	}
 	@PutMapping("/quiz")
