@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.ui.Model;
+
 import fr.paulitique.quiz.dto.QuizDTO;
 import fr.paulitique.quiz.mapper.QuizMapper;
 import fr.paulitique.quiz.metier.QuizService;
@@ -34,6 +36,17 @@ public class QuizController {
 		
 		return createdQuizDTO;
 	}
+	
+	/*
+	@GetMapping("/")
+	public String index(Model model) {
+		return "redirect:fraise";
+	}
+	
+	@GetMapping("/fraise")
+	public String fraise(Model model) {
+		return "fraise";
+	}*/
 	
 	
 }
