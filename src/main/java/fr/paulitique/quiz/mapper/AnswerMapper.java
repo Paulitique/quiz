@@ -1,8 +1,16 @@
 package fr.paulitique.quiz.mapper;
 
+import java.util.ArrayList;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import fr.paulitique.quiz.model.Answer;
+import fr.paulitique.quiz.model.Choice;
 import fr.paulitique.quiz.model.FreeAnswer;
+import fr.paulitique.quiz.dao.IQuestionDAO;
 import fr.paulitique.quiz.dao.IQuizDAO;
 import fr.paulitique.quiz.dto.FreeAnswerDTO;
 import fr.paulitique.quiz.model.MultipleChoiceAnswer;
@@ -19,6 +27,9 @@ public class AnswerMapper {
 	
 	@Autowired
 	private IQuizDAO quizDAO;
+	
+	@Autowired
+	private IQuestionDAO questionDAO;
 	
 	public FreeAnswerDTO entityToDTO(FreeAnswer answer) {
 		
@@ -41,7 +52,7 @@ public class AnswerMapper {
 		return answer;
 	}
 	
-public NumericalAnswerDTO entityToDTO(NumericalAnswer answer) {
+	public NumericalAnswerDTO entityToDTO(NumericalAnswer answer) {
 		
 		NumericalAnswerDTO answerDTO = new NumericalAnswerDTO();
 		
@@ -62,7 +73,7 @@ public NumericalAnswerDTO entityToDTO(NumericalAnswer answer) {
 		return answer;
 	}
 	
-public UniqueChoiceAnswerDTO entityToDTO(UniqueChoiceAnswer answer) {
+	public UniqueChoiceAnswerDTO entityToDTO(UniqueChoiceAnswer answer) {
 		
 		UniqueChoiceAnswerDTO answerDTO = new UniqueChoiceAnswerDTO();
 		
@@ -83,13 +94,19 @@ public UniqueChoiceAnswerDTO entityToDTO(UniqueChoiceAnswer answer) {
 		return answer;
 	}
 	
-public QuizAnswerDTO entityToDTO(QuizAnswer answer) {
+	public QuizAnswerDTO entityToDTO(QuizAnswer answer) {
 		
 		QuizAnswerDTO answerDTO = new QuizAnswerDTO();
 		
 		answerDTO.setId(answer.getId());
 		answerDTO.setIdQuiz(answer.getQuiz().getId());
-		//TODO answer
+		// answers :
+		java.util.Iterator<Answer> iterator = answer.getAnswer().iterator();
+		ArrayList<Integer> answerIdList = new ArrayList<Integer>();
+		while( iterator.hasNext() ) {
+			answerIdList.add( iterator.next().getId() );
+		}
+		answerDTO.setIdAnswerList(answerIdList);
 		
 		return answerDTO;
 	}
@@ -104,7 +121,33 @@ public QuizAnswerDTO entityToDTO(QuizAnswer answer) {
 		return answer;
 	}
 	
-	//TODO MultipleChoiceAnswer
+	public MultipleChoiceAnswerDTO entityToDTO(MultipleChoiceAnswer answer) {
+		
+		MultipleChoiceAnswerDTO answerDTO = new MultipleChoiceAnswerDTO();
+		
+		answerDTO.setId(answer.getId());
+		answerDTO.setIdQuestion(answer.getQuestion().getId());
+		// choices :
+		java.util.Iterator<Choice> iterator = answer.getChoices().iterator();
+		ArrayList<Integer> choiceIdList = new ArrayList<Integer>();
+		while( iterator.hasNext() ) {
+			choiceIdList.add( iterator.next().getId() );
+		}
+		answerDTO.setIdChoice(choiceIdList);
+		
+		return answerDTO;
+	}
+	
+	public MultipleChoiceAnswer DTOToEntity(MultipleChoiceAnswerDTO answerDTO) {
+		MultipleChoiceAnswer answer = new MultipleChoiceAnswer();
+		
+		answer.setId(answerDTO.getId());
+		//TODO answer.setQuiz(questionDAO.findQuizById(answerDTO.getIdQuestion()));
+		//TODO answer.setAnswer();
+		
+		return answer;
+	}
+	
 	
 	//
 	//
