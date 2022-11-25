@@ -6,4 +6,6 @@ import fr.paulitique.quiz.model.Choice;
 
 public interface IChoiceDAO extends JpaRepository<Choice, Integer>{
 
+	Choice findChoiceById(Integer id);
+	
 }

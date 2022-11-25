@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import fr.paulitique.quiz.dto.QuizDTO;
 import fr.paulitique.quiz.mapper.QuizMapper;
@@ -18,6 +19,7 @@ import fr.paulitique.quiz.model.Quiz;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
+@RequestMapping("/api/quiz")
 public class QuizController {
 
 	@Autowired
@@ -26,7 +28,7 @@ public class QuizController {
 	@Autowired
 	private QuizMapper quizMapper;
 	
-	@PostMapping("/api/quiz")
+	@PostMapping("/")
 	public QuizDTO createQuiz(@RequestBody QuizDTO quizDTO) {
 		
 		Quiz quiz = quizMapper.DTOToEntity(quizDTO);
@@ -38,7 +40,7 @@ public class QuizController {
 		return createdQuizDTO;
 	}
 
-	@DeleteMapping("/api/quiz/{quizId}")
+	@DeleteMapping("/{quizId}")
 	public void deleteQuiz(@PathVariable String quizId) {
 		
 		Integer id = Integer.parseInt(quizId);
@@ -47,7 +49,7 @@ public class QuizController {
 		
 	}
 	
-	@GetMapping("/api/quiz/{quizId}")
+	@GetMapping("/{quizId}")
 	public QuizDTO getQuiz(@PathVariable String quizId) {
 		
 		Integer id = Integer.parseInt(quizId);
@@ -60,7 +62,7 @@ public class QuizController {
 		
 	}
 	
-	@GetMapping("/api/quiz/getAll")
+	@GetMapping("/all")
 	public List<QuizDTO> getAllQuiz() {
 		
 		List<QuizDTO> quizDTOList = new ArrayList<QuizDTO>();
@@ -72,7 +74,7 @@ public class QuizController {
 		return quizDTOList;
 		
 	}
-	@PutMapping("/quiz")
+	@PutMapping("/")
 	public QuizDTO modifyQuiz(@RequestBody QuizDTO quizDTO ) {
 		
 		Quiz quiz = quizMapper.DTOToEntity(quizDTO);

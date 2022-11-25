@@ -1,6 +1,6 @@
 package fr.paulitique.quiz.model;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +25,7 @@ public class Quiz {
 	private String description;
 	
 	@OneToMany
-	private Set<Quiz> questions;
+	private List<Question> questions;
 	
 	//TODO: Add categories
 	// private Iterable<Category> categories;
