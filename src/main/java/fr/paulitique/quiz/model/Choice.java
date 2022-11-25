@@ -1,12 +1,12 @@
 package fr.paulitique.quiz.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,19 +14,15 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Quiz {
-
+public class Choice {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Integer id;
 	
-	private String name;
+	private String text;
 	
-	private String description;
-	
-	@OneToMany
-	private List<Question> questions;
-	
-	//TODO: Add categories
-	// private Iterable<Category> categories;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CHOICE_QUESTION_ID", nullable = true)
+	private ChoiceQuestion question;
 }
