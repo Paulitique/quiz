@@ -1,8 +1,7 @@
 package fr.paulitique.quiz.mapper;
 
 import java.util.ArrayList;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,6 +9,8 @@ import org.springframework.stereotype.Component;
 import fr.paulitique.quiz.model.Answer;
 import fr.paulitique.quiz.model.Choice;
 import fr.paulitique.quiz.model.FreeAnswer;
+import fr.paulitique.quiz.dao.IAnswerDAO;
+import fr.paulitique.quiz.dao.IChoiceDAO;
 import fr.paulitique.quiz.dao.IQuestionDAO;
 import fr.paulitique.quiz.dao.IQuizDAO;
 import fr.paulitique.quiz.dto.FreeAnswerDTO;
@@ -31,6 +32,12 @@ public class AnswerMapper {
 	@Autowired
 	private IQuestionDAO questionDAO;
 	
+	@Autowired
+	private IChoiceDAO choiceDAO;
+	
+	@Autowired 
+	private IAnswerDAO answerDAO;
+	
 	public FreeAnswerDTO entityToDTO(FreeAnswer answer) {
 		
 		FreeAnswerDTO answerDTO = new FreeAnswerDTO();
@@ -47,7 +54,7 @@ public class AnswerMapper {
 		
 		answer.setId(answerDTO.getId());
 		answer.setContent(answerDTO.getContent());
-		// TODO answer.setQuestion();
+		answer.setQuestion(questionDAO.findQuestionById(answerDTO.getIdQuestion()));
 		
 		return answer;
 	}
@@ -68,7 +75,7 @@ public class AnswerMapper {
 		
 		answer.setId(answerDTO.getId());
 		answer.setNum(answerDTO.getNum());
-		// TODO answer.setQuestion();
+		answer.setQuestion(questionDAO.findQuestionById(answerDTO.getIdQuestion()));
 		
 		return answer;
 	}
@@ -88,8 +95,8 @@ public class AnswerMapper {
 		UniqueChoiceAnswer answer = new UniqueChoiceAnswer();
 		
 		answer.setId(answerDTO.getId());
-		// TODO answer.setChoice();
-		// TODO answer.setQuestion();
+		answer.setChoice(choiceDAO.findChoiceById(answerDTO.getIdChoice()));
+		answer.setQuestion(questionDAO.findQuestionById(answerDTO.getIdQuestion()));
 		
 		return answer;
 	}
@@ -101,7 +108,7 @@ public class AnswerMapper {
 		answerDTO.setId(answer.getId());
 		answerDTO.setIdQuiz(answer.getQuiz().getId());
 		// answers :
-		java.util.Iterator<Answer> iterator = answer.getAnswer().iterator();
+		Iterator<Answer> iterator = answer.getAnswer().iterator();
 		ArrayList<Integer> answerIdList = new ArrayList<Integer>();
 		while( iterator.hasNext() ) {
 			answerIdList.add( iterator.next().getId() );
@@ -116,8 +123,13 @@ public class AnswerMapper {
 		
 		answer.setId(answerDTO.getId());
 		answer.setQuiz(quizDAO.findQuizById(answerDTO.getIdQuiz()));
-		//TODO answer.setAnswer();
-		
+		//answers :
+		Iterator<Integer> iterator = answerDTO.getIdAnswerList().iterator();
+		ArrayList<Answer> answerList = new ArrayList<Answer>();
+		while( iterator.hasNext() ) {
+			answerList.add( answerDAO.findAnswerById(iterator.next()) );
+		}
+		answer.setAnswer( answerList );
 		return answer;
 	}
 	
@@ -128,7 +140,7 @@ public class AnswerMapper {
 		answerDTO.setId(answer.getId());
 		answerDTO.setIdQuestion(answer.getQuestion().getId());
 		// choices :
-		java.util.Iterator<Choice> iterator = answer.getChoices().iterator();
+		Iterator<Choice> iterator = answer.getChoices().iterator();
 		ArrayList<Integer> choiceIdList = new ArrayList<Integer>();
 		while( iterator.hasNext() ) {
 			choiceIdList.add( iterator.next().getId() );
@@ -142,8 +154,14 @@ public class AnswerMapper {
 		MultipleChoiceAnswer answer = new MultipleChoiceAnswer();
 		
 		answer.setId(answerDTO.getId());
-		//TODO answer.setQuiz(questionDAO.findQuizById(answerDTO.getIdQuestion()));
-		//TODO answer.setAnswer();
+		answer.setQuestion(questionDAO.findQuestionById(answerDTO.getIdQuestion()));
+		// choices :
+		Iterator<Integer> iterator = answerDTO.getIdChoice().iterator();
+		ArrayList<Choice> choiceList = new ArrayList<Choice>();
+		while( iterator.hasNext() ) {
+			choiceList.add( choiceDAO.findChoiceById(iterator.next()) );
+		}
+		answer.setChoices(choiceList);
 		
 		return answer;
 	}
