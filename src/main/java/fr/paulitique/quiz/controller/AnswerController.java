@@ -21,12 +21,12 @@ public class AnswerController {
 	@PostMapping("/api/answer")
 	public AnswerDTO createAnswer(@RequestBody AnswerDTO answerDTO) {
 		
-		Answer answer = answerMapper.DTOToEntity(answerDTO);
+		//Answer answer = answerMapper.DTOToEntity(answerDTO);
 		
-		Quiz createdAnswer = answerService.createAnswer(answer);
+		//Quiz createdAnswer = answerService.createAnswer(answer);
 		
-		QuizDTO createdAnswerDTO = answerMapper.entityToDTO(createdAnswer);
+		//QuizDTO createdAnswerDTO = answerMapper.entityToDTO(createdAnswer);
 		
-		return createdAnswerDTO;
+		return null;
 	}
 }
