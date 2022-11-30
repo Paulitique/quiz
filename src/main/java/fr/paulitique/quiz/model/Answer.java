@@ -1,7 +1,5 @@
 package fr.paulitique.quiz.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,23 +15,15 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Quiz {
+public abstract class Answer {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@Column(name="QUIZ_TEXT")
+	@Column(name="ANSWER_TEXT")
 	private Integer id;
 	
-	@Column(name="QUIZ_NAME")
-	private String name;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ANSWER_F_QUESTION_ID", nullable = true)
+	private Question question;
 	
-	@Column(name="QUIZ_DESCRIPTION")
-	private String description;
-	
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "QUESTION_F_QUIZ_ID", nullable = true)
-	private List<Question> questions;
-	
-	//TODO: Add categories
-	// private Iterable<Category> categories;
 }

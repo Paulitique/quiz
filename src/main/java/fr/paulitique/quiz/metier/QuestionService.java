@@ -17,8 +17,8 @@ import fr.paulitique.quiz.model.FreeQuestion;
 import fr.paulitique.quiz.model.MultipleChoiceQuestion;
 import fr.paulitique.quiz.model.NumericalQuestion;
 import fr.paulitique.quiz.model.Question;
+import fr.paulitique.quiz.model.Quiz;
 import fr.paulitique.quiz.model.UniqueChoiceQuestion;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 
 @Component
@@ -42,6 +42,20 @@ public class QuestionService {
 	
 	@Autowired
 	private ChoiceService choiceService;
+	
+	@Autowired
+	private QuizService quizService;
+	
+	@Autowired
+	private AnswerService answerService;
+	
+	
+	public Question createQuestion(Integer quizId, Question question) {
+		Quiz quiz = quizService.getQuiz(quizId);
+		question.setQuiz(quiz);
+		
+		return createQuestion(question);
+	}
 	
 	public Question createQuestion(Question question) {
 		if (question instanceof FreeQuestion) return createQuestion((FreeQuestion) question);
@@ -99,6 +113,8 @@ public class QuestionService {
 	
 	public void deleteQuestion(Integer id) {
 		Question question = questionDAO.findQuestionById(id);
+		
+		question.getAnswers().forEach(answerService::deleteAnswer);
 		
 		if (question instanceof ChoiceQuestion) {
 			((ChoiceQuestion) question).getChoices().forEach(choiceService::deleteChoice);

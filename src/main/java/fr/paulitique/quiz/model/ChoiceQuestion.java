@@ -16,7 +16,7 @@ import lombok.Setter;
 public abstract class ChoiceQuestion extends Question {
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CHOICE_QUESTION_ID", nullable = true)
+	@JoinColumn(name = "CHOICE_F_QUESTION_ID", nullable = true)
 	private List<Choice> choices;
 
 }
