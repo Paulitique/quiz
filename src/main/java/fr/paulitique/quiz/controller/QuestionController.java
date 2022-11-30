@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.paulitique.quiz.dto.QuestionDTO;
 import fr.paulitique.quiz.mapper.QuestionMapper;
 import fr.paulitique.quiz.metier.QuestionService;
+import fr.paulitique.quiz.metier.QuizService;
 import fr.paulitique.quiz.model.Question;
+import fr.paulitique.quiz.model.Quiz;
 
 @RestController
-@RequestMapping("/api/question")
+@RequestMapping("/api/quiz")
 public class QuestionController {
 
 	@Autowired
@@ -28,13 +30,16 @@ public class QuestionController {
 	@Autowired
 	private QuestionMapper questionMapper;
 	
-	@PostMapping("/")
-	public QuestionDTO createQuestion(@RequestBody QuestionDTO questionDTO) {
+	@Autowired
+	private QuizService quizService;
+	
+	@PostMapping("/{quizId}/question")
+	public QuestionDTO createQuestion(@PathVariable String quizId, @RequestBody QuestionDTO questionDTO) {
 		
-		return questionMapper.entityToDTO(questionService.createQuestion(questionMapper.DTOToEntity(questionDTO))); 
+		return questionMapper.entityToDTO(questionService.createQuestion(Integer.parseInt(quizId), questionMapper.DTOToEntity(questionDTO))); 
 	}
 	
-	@GetMapping("/all")
+	@GetMapping("/question/all")
 	public List<QuestionDTO> getAllQuestion() {
 		
 		List<QuestionDTO> questionDTOList = new ArrayList<>();
@@ -43,7 +48,17 @@ public class QuestionController {
 		return questionDTOList;
 	}
 	
-	@GetMapping("/{questionId}")
+	@GetMapping("/{quizId}/question/all")
+	public List<QuestionDTO> getAllQuestion(@PathVariable String quizId) {
+		Integer id = Integer.parseInt(quizId);
+		Quiz quiz = quizService.getQuiz(id);
+		List<QuestionDTO> questionDTOList = new ArrayList<>();
+		quiz.getQuestions().forEach(question -> questionDTOList.add(questionMapper.entityToDTO(question)));
+		
+		return questionDTOList;
+	}
+	
+	@GetMapping("/question/{questionId}")
 	public QuestionDTO getQuestion(@PathVariable String questionId) {
 		Integer id = Integer.parseInt(questionId);
 		
@@ -54,14 +69,14 @@ public class QuestionController {
 		return questionDTO;
 	}
 	
-	@DeleteMapping("/{questionId}")
+	@DeleteMapping("/question/{questionId}")
 	public void deleteQuestion(@PathVariable String questionId) {
 		Integer id = Integer.parseInt(questionId);
 		
 		questionService.deleteQuestion(id);
 	}
 	
-	@PutMapping("/")
+	@PutMapping("/question/")
 	public QuestionDTO updateQuestion(@RequestBody QuestionDTO questionDTO) {
 		Question question = questionMapper.DTOToEntity(questionDTO);
 		Question savedQuestion = questionService.updateQuestion(question);

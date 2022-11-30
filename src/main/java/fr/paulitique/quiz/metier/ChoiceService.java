@@ -1,9 +1,10 @@
 package fr.paulitique.quiz.metier;
 
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import fr.paulitique.quiz.dao.IChoiceDAO;
@@ -15,6 +16,10 @@ public class ChoiceService {
 	@Autowired
 	private IChoiceDAO choiceDAO;
 	
+	@Autowired
+	@Lazy
+	private AnswerService answerService;
+	
 	public Choice createChoice(Choice choice) {
 		choice.setId(null);
 		Choice savedChoice = choiceDAO.save(choice);
@@ -22,6 +27,22 @@ public class ChoiceService {
 	}
 	
 	public void deleteChoice(Choice choice) {
+		choice.getMultipleChoiceAnswers().forEach(answer -> {
+			List<Choice> choices = answer.getChoices();
+			List<Choice> newChoices = new ArrayList<>();
+			choices.forEach(currentChoice -> {
+				if (!currentChoice.getId().equals(choice.getId())) {
+					newChoices.add(currentChoice);
+				}
+			});
+			answer.setChoices(newChoices);
+			answerService.updateAnswer(answer);
+		});
+		
+		choice.getUniqueChoiceAnswers().forEach(answer -> {
+			answerService.deleteAnswer(answer);
+		});
+		
 		choiceDAO.delete(choice);
 	}
 	

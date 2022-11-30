@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import fr.paulitique.quiz.dao.IQuizDAO;
@@ -14,6 +15,10 @@ public class QuizService {
 	
 	@Autowired
 	private IQuizDAO quizDAO;
+	
+	@Autowired
+	@Lazy
+	private QuestionService questionService;
 	
 	public Quiz createQuiz(Quiz quiz) {
 		
@@ -34,6 +39,7 @@ public class QuizService {
 		
 		//TODO: Add confirmation step ?
 		Quiz quiz = quizDAO.findQuizById(id);
+		quiz.getQuestions().forEach(question -> questionService.deleteQuestion(question.getId()));
 		quizDAO.delete(quiz);
 
 	}
@@ -56,8 +62,8 @@ public class QuizService {
 		
 		Quiz storedQuiz = quizDAO.findQuizById(quiz.getId());
 		
-		storedQuiz.setName(storedQuiz.getName());
-		storedQuiz.setDescription(storedQuiz.getDescription());
+		storedQuiz.setName(quiz.getName());
+		storedQuiz.setDescription(quiz.getDescription());
 		
 		Quiz savedQuiz = quizDAO.save(storedQuiz);
 		
