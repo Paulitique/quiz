@@ -69,8 +69,28 @@
             </div>
             <!-- About Section Content-->
             <div class="">
-            	<p class="fs-5 mb-4" th:text="'Hello, ' + ${name} + '!'" />              
+            	<p class="fs-5 mb-4" th:text="'Hello, ' + ${name} + '!'" />           
             </div>
+			<form method="POST" action="/api/quiz/">
+				<div class="form-group">
+					<label for="inputId">Id</label> <input
+						type="number" class="form-control" id="inputId"
+						placeholder="id" name="id">
+				</div>
+				<div class="form-group">
+					<label for="inputName">Quiz Name</label> <input
+						type="text" class="form-control" id="inputName"
+						aria-describedby="descriptionHelp" placeholder="Name" name="name"> <small
+						id="descriptionHelp" class="form-text text-muted">Meaningful quiz name.</small>
+				</div>
+				<div class="form-group">
+					<label for="inputDescription">Quiz description</label> <input
+						type="text" class="form-control" id="inputDescription"
+						aria-describedby="descriptionHelp" placeholder="description" name="description"> <small
+						id="descriptionHelp" class="form-text text-muted">Small description of the quiz suject.</small>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
         </div>
     </section>
     <!-- Footer-->
