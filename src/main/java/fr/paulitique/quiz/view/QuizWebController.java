@@ -1,10 +1,15 @@
 package fr.paulitique.quiz.view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import fr.paulitique.quiz.model.Quiz;
 
 @Controller
 public class QuizWebController {
@@ -46,4 +53,22 @@ public class QuizWebController {
 		return "redirect:/quiz/new?status="+message+"#create";
 	}
 	
+	@GetMapping("/quiz/all")
+	public String listQuiz(
+			@RequestHeader(name="Host", required=false) String host, 
+			Model model) {
+		
+		UriComponents uri = UriComponentsBuilder
+				.fromHttpUrl("http://"+host)
+				.path("/api/quiz/all")
+				.build().encode();
+
+		ResponseEntity<Quiz[]> res = new RestTemplate()
+				.getForEntity(uri.toUriString(), Quiz[].class);
+		Quiz[] q = res.getBody();
+		
+		model.addAttribute("quizList", q);
+		
+		return "listQuiz";
+	}
 }

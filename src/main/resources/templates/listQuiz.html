@@ -29,7 +29,7 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/index.html#about">About</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/quiz/new#create">Create</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#create">Create</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Read</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Update</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Delete</a></li>
@@ -67,10 +67,20 @@
                 <div class="divider-custom-icon"><i class="fas fa-handshake"></i></div>
                 <div class="divider-custom-line"></div>
             </div>
-            <!-- Section Content-->
-            <p class="fs-1 text-center">400</p>
-            <p class="fs-2 text-center">Bad Request</p>
-        </div>
+            <!-- About Section Content-->
+			<div class="row row-cols-1 row-cols-md-3 g-4" >
+				
+				<div class="col" th:each="quiz: ${quizList}">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title" th:text="${quiz.name}"></h5>
+							<p class="card-text" th:text="${quiz.description}"></p>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
     </section>
     <!-- Footer-->
     <footer class="footer text-center">
