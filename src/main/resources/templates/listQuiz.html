@@ -29,8 +29,8 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/index.html#about">About</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#create">Create</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Read</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/quiz/new#create">Create</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/quiz/all#list">List</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Update</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Delete</a></li>
                 </ul>
@@ -57,7 +57,7 @@
         </div>
     </header>
     <!-- Create Section-->
-    <section class="page-section min-vh-100" id="create">
+    <section class="page-section min-vh-100" id="list">
         <div class="container">
             <!-- About Section Heading-->
             <h2 class="page-section-heading text-center text-uppercase text-white">A propos</h2>
@@ -68,6 +68,9 @@
                 <div class="divider-custom-line"></div>
             </div>
             <!-- About Section Content-->
+			<div class="alert alert-primary" th:if="${status}!=null" role="alert">
+				<span th:text="${status}"></span>
+			</div>
 			<div class="row row-cols-1 row-cols-md-3 g-4" >
 				
 				<div class="col" th:each="quiz: ${quizList}">
@@ -75,6 +78,10 @@
 						<div class="card-body">
 							<h5 class="card-title" th:text="${quiz.name}"></h5>
 							<p class="card-text" th:text="${quiz.description}"></p>
+						</div>
+						<div class="card-footer d-flex justify-content-between">
+							<a th:href="@{'/quiz/update?id=' + ${quiz.id}}"><small class="text-muted"><i class="fas fa-edit"></i></small></a>
+							<a th:href="@{'/quiz/delete?id=' + ${quiz.id}}"><small class="text-muted"><i class="fas fa-trash-alt"></i></small></a>
 						</div>
 					</div>
 				</div>

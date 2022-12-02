@@ -1,5 +1,6 @@
 package fr.paulitique.quiz.view;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -55,6 +56,7 @@ public class QuizWebController {
 	
 	@GetMapping("/quiz/all")
 	public String listQuiz(
+			@RequestParam(name="status", required=false) String status,
 			@RequestHeader(name="Host", required=false) String host, 
 			Model model) {
 		
@@ -67,8 +69,25 @@ public class QuizWebController {
 				.getForEntity(uri.toUriString(), Quiz[].class);
 		Quiz[] q = res.getBody();
 		
+		model.addAttribute("status", status);
 		model.addAttribute("quizList", q);
 		
 		return "listQuiz";
+	}
+	
+	@GetMapping("/quiz/delete")
+	public String deleteQuiz(
+			@RequestParam(name="id", required=false) String id,
+			@RequestHeader(name="Host", required=false) String host, 
+			Model model) {
+		
+		UriComponents uri = UriComponentsBuilder
+				.fromHttpUrl("http://"+host)
+				.path("/api/quiz/"+id)
+				.build().encode();
+		
+		new RestTemplate().delete(uri.toUriString());
+		
+		return "redirect:/quiz/all?status=Suppression%20quiz%20ok#list";
 	}
 }
