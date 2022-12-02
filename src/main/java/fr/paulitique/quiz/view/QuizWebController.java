@@ -64,7 +64,8 @@ public class QuizWebController {
 				.fromHttpUrl("http://"+host)
 				.path("/api/quiz/all")
 				.build().encode();
-
+		
+		//TO DO : quiz should be quizDTO
 		ResponseEntity<Quiz[]> res = new RestTemplate()
 				.getForEntity(uri.toUriString(), Quiz[].class);
 		Quiz[] q = res.getBody();
