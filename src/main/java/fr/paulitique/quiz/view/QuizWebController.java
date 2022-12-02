@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,13 +28,11 @@ public class QuizWebController {
 	public String createNewQuiz(
 			@RequestParam(name="name", required=true) String name,
 			@RequestParam(name="description", required=true) String description,
+			@RequestHeader(name="Host", required=false) String host,
 			Model model) {
 		
 		UriComponents uri = UriComponentsBuilder
-				.newInstance()
-				.scheme("http")
-				.host("localhost")
-				.port("8080")
+				.fromHttpUrl("http://"+host)
 				.path("/api/quiz/")
 				.queryParam("name", name)
 				.queryParam("description", description)
