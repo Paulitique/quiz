@@ -50,7 +50,7 @@ public class QuizWebController {
 				.postForObject(uri.toUriString(), 
 				new HttpEntity<String>("", new HttpHeaders()), String.class);
 		
-		String message = res.contains("id")?"worked":"failed";
+		String message = res.contains("id")?"ok":"ko";
 		return "redirect:/quiz/new?status="+message+"#create";
 	}
 	
@@ -77,8 +77,8 @@ public class QuizWebController {
 	
 	@GetMapping("/quiz/delete")
 	public String deleteQuiz(
-			@RequestParam(name="id", required=false) String id,
-			@RequestHeader(name="Host", required=false) String host, 
+			@RequestParam(name="id", required=true) String id,
+			@RequestHeader(name="Host", required=true) String host, 
 			Model model) {
 		
 		UriComponents uri = UriComponentsBuilder
@@ -89,5 +89,45 @@ public class QuizWebController {
 		new RestTemplate().delete(uri.toUriString());
 		
 		return "redirect:/quiz/all?status=Suppression%20quiz%20ok#list";
+	}
+	
+	@GetMapping("/quiz/update")
+	public String updateQuizForm(
+			@RequestParam(name="id", required=true) String id,
+			@RequestHeader(name="Host", required=true) String host,
+			Model model) {
+		
+		UriComponents uri = UriComponentsBuilder
+				.fromHttpUrl("http://"+host)
+				.path("/api/quiz/")
+				.path(id)
+				.build().encode();
+		
+		Quiz res = new RestTemplate().getForObject(uri.toUriString(), Quiz.class);
+		
+		model.addAttribute("quiz", res);
+		
+		return "updateQuiz";
+	}
+	
+	@GetMapping("/quiz/putUpdate")
+	public String updateQuiz(
+			@RequestParam(name="id", required=true) String id,
+			@RequestParam(name="name", required=true) String name,
+			@RequestParam(name="description", required=true) String description,
+			@RequestHeader(name="Host", required=true) String host,
+			Model model) {
+		
+		UriComponents uri = UriComponentsBuilder
+				.fromHttpUrl("http://"+host)
+				.path("/api/quiz/")
+				.queryParam("id", id)
+				.queryParam("name", name)
+				.queryParam("description", description)
+				.build().encode();
+		
+		new RestTemplate().put(uri.toUriString(), "");
+		
+		return "redirect:/quiz/all?status=Modification%20quiz%20ok#list";
 	}
 }
