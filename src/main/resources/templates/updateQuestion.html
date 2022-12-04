@@ -106,8 +106,9 @@
 						Question à poser.
 					</small>
 				</div>
-				<div class="col text-center mx-3 my-1">
-					<button type="submit" class="btn btn-secondary">Ajouter</button>
+				<div class="col d-flex justify-content-evenly mx-3 my-1">
+					<button type="submit" class="btn btn-secondary">Modifier</button>
+					<a th:href="@{'/quiz/question/delete?id=' + ${question.id}}"  class="btn btn-secondary">Supprimer</a>
 				</div>
 			</form>
 			

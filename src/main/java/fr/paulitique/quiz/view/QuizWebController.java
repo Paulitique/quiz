@@ -259,6 +259,23 @@ public class QuizWebController {
 		return "redirect:/quiz/question/update?id="+id+"&status=Modification%20question%20ok#update";
 	}
 	
+	@GetMapping("/quiz/question/delete")
+	public String deleteQuestion(
+			@RequestParam(name="id", required=true) String id,
+			@RequestHeader(name="Host", required=true) String host, 
+			Model model) {
+		
+		UriComponents uri = UriComponentsBuilder
+				.fromHttpUrl("http://"+host)
+				.path("/api/quiz/question/")
+				.path(id)
+				.build().encode();
+		
+		new RestTemplate().delete(uri.toUriString());
+		
+		return "redirect:/quiz/all?status=Suppression%20question%20ok#list";
+	}
+	
 	@GetMapping("/quiz/view")
 	public String viewQuiz(
 			@RequestParam(name="id", required=true) String id,
