@@ -204,6 +204,61 @@ public class QuizWebController {
 		return "redirect:/quiz/compose?id="+quizId+"&status=Ajout%20question%20ok#compose";
 	}
 	
+	@GetMapping("/quiz/question/update")
+	public String updateQuestionForm(
+			@RequestParam(name="id", required=true) String id,
+			@RequestParam(name="status", required=false) String status,
+			@RequestHeader(name="Host", required=true) String host,
+			Model model) {
+		
+		model.addAttribute("status", status);
+		
+		UriComponents uri = UriComponentsBuilder
+				.fromHttpUrl("http://"+host)
+				.path("/api/quiz/question/")
+				.path(id)
+				.build().encode();
+		
+		Object res = new RestTemplate().getForObject(uri.toUriString(), Object.class);
+		
+		model.addAttribute("question", res);
+		
+		return "updateQuestion";
+	}
+	
+	@GetMapping("/quiz/question/putUpdate")
+	public String updateQuestion(
+			@RequestParam(name="id", required=true) String id,
+			@RequestParam(name="questionType", required=true) String questionType,
+			@RequestParam(name="question", required=true) String question,
+			@RequestHeader(name="Host", required=true) String host,
+			Model model) {
+		
+		UriComponents uri = UriComponentsBuilder
+				.fromHttpUrl("http://"+host)
+				.path("/api/quiz/question/")
+				.build().encode();
+		
+		String jsonQuestion = "";
+		Map<String, Object> jsonMap = new HashMap<String, Object>();
+		jsonMap.put("id", id);
+		jsonMap.put("questionType", questionType);
+		jsonMap.put("text", question);
+		try {
+			jsonQuestion = new ObjectMapper().writeValueAsString(jsonMap);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		HttpHeaders h = new HttpHeaders();
+		h.setContentType(MediaType.APPLICATION_JSON);
+		new RestTemplate()
+				.put(uri.toUriString(), new HttpEntity<String>(jsonQuestion, h),
+				String.class);
+		
+		return "redirect:/quiz/question/update?id="+id+"&status=Modification%20question%20ok#update";
+	}
+	
 	@GetMapping("/quiz/view")
 	public String viewQuiz(
 			@RequestParam(name="id", required=true) String id,

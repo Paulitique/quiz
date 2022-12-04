@@ -31,8 +31,7 @@
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/index.html#about">About</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/quiz/new#create">Create</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/quiz/all#list">List</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Update</a></li>
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Delete</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Answer</a></li>
                 </ul>
             </div>
         </div>
@@ -77,8 +76,9 @@
 
 			<div class="list-group mb-3">
 			
-				<a href="#" class="list-group-item list-group-item-action" 
-				th:each="question: ${questionList}">
+				<a th:href="@{'/quiz/question/update?id=' + ${question.id}} + '#update'" 
+					class="list-group-item list-group-item-action" 
+					th:each="question: ${questionList}">
 					<div class="d-flex w-100 justify-content-between">
 						<h5 class="mb-1" th:text="${question.text}"></h5>
 						<small class="text-muted" th:text="${question.questionType}"></small>
