@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8" />
@@ -7,13 +7,13 @@
     <meta name="description" content="Paulitique association de CY-Tech Pau (CY-Tech)" />
     <meta name="author" content="lostsh ᓚᘏᗢ" />
     <title>Paulitique</title>
-    <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.png" />
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-    <link href="assets/css/styles.css" rel="stylesheet" />
+    <link href="/assets/css/styles.css" rel="stylesheet" />
 
 </head>
 
@@ -21,16 +21,18 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand" href="#page-top">Paulitique</a>
+            <a class="navbar-brand" href="/index.html#page-top">Paulitique</a>
             <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">About</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/index.html#about">About</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/quiz/new#create">Create</a></li>
                     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/quiz/all#list">List</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Update</a></li>
+                    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Delete</a></li>
                 </ul>
             </div>
         </div>
@@ -54,11 +56,11 @@
             <p class="masthead-subheading  mb-0 fw-bolder">Débats - Échanges - Culture</p>
         </div>
     </header>
-    <!-- About Section-->
-    <section class="page-section min-vh-100" id="about">
+    <!-- Create Section-->
+    <section class="page-section min-vh-100" id="compose">
         <div class="container">
             <!-- About Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase">A propos</h2>
+            <h2 class="page-section-heading text-center text-uppercase text-white">A propos</h2>
             <!-- Icon Divider-->
             <div class="divider-custom divider-light">
                 <div class="divider-custom-line"></div>
@@ -66,23 +68,63 @@
                 <div class="divider-custom-line"></div>
             </div>
             <!-- About Section Content-->
-            <div class="row">
-                <div class="col-lg-4 ms-auto">
-                    <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec metus est. Sed mattis placerat nunc, sed condimentum justo efficitur cursus.</p>
-                </div>
-                <div class="col-lg-4 me-auto">
-                    <p class="lead">Nunc augue ex, sagittis quis lorem eget, congue vestibulum enim. Curabitur laoreet felis ac orci ullamcorper, ut interdum sapien iaculis. Vestibulum auctor justo eget dolor maximus posuere. Aenean justo augue, condimentum nec malesuada mollis, eleifend et arcu. Aliquam id vehicula tortor, eu accumsan lectus. Vivamus sodales maximus purus aliquet posuere.</p>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-lg-4 ms-auto">
-                    <p class="lead">Donec vitae orci id ipsum commodo feugiat. Vivamus quis vestibulum arcu.</p>
-                </div>
-                <div class="col-lg-4 me-auto">
-                    <p class="lead">Sed vel felis magna. Nulla mollis fringilla lectus sit amet volutpat. Curabitur commodo convallis semper.</p>
-                </div>
-            </div>
-        </div>
+			<div class="alert alert-primary" th:if="${status}!=null" role="alert">
+            	<span th:text="${status}"></span>
+			</div>
+			
+			<h3 class="text-center" th:text="${quiz.name}"></h3>
+			<p class="text-center fs-4" th:text="${quiz.description}"></p>
+
+			<div class="list-group mb-3">
+			
+				<a href="#" class="list-group-item list-group-item-action" 
+				th:each="question: ${questionList}">
+					<div class="d-flex w-100 justify-content-between">
+						<h5 class="mb-1" th:text="${question.text}"></h5>
+						<small class="text-muted" th:text="${question.questionType}"></small>
+					</div>
+					<p class="mb-1">Some placeholder content in a paragraph.</p> 
+					<small>And some small print.</small>
+				</a>
+				
+			</div>
+
+			<form class="border border-primary rounded-2" method="GET"
+				action="/quiz/compose/new">
+				<div hidden class="form-group">
+					<label for="inputId">Quiz Id</label> 
+					<input type="text" class="form-control" id="inputId"
+						aria-describedby="descriptionHelp" placeholder="Id" name="quizId"
+						th:value="${quiz.id}"> 
+					<small id="descriptionHelp" class="form-text text-muted"></small>
+				</div>
+				<div class="form-group mx-3 my-1">
+				<label for="selectQuestion">Type question</label> 
+					<select class="form-select" aria-label="Type de question" 
+							id="selectQuestion" name="questionType">
+						<option value="FreeQuestion" selected>Question ouverte</option>
+						<!-- 
+						<option value="MultipleChoiceQuestion">QCM à réponses multiples</option>
+						<option value="UniqueChoiceQuestion">QCM à réponse unique</option>
+						 -->
+						<option value="NumericalQuestion">Question à réponse numérique</option>
+					</select>
+				</div>
+				<div class="form-group mx-3 my-1">
+					<label for="inputQuestion">Question</label> 
+					<input type="text" class="form-control" id="inputQuestion"
+						aria-describedby="descriptionHelp" placeholder="Question"
+						name="question"> 
+					<small id="QuestionHelp" class="form-text text-muted"> 
+						Question à poser.
+					</small>
+				</div>
+				<div class="col text-center mx-3 my-1">
+					<button type="submit" class="btn btn-secondary">Ajouter</button>
+				</div>
+			</form>
+
+		</div>
     </section>
     <!-- Footer-->
     <footer class="footer text-center">
@@ -117,7 +159,7 @@
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
-    <script src="assets/js/scripts.js"></script>
+    <script src="/assets/js/scripts.js"></script>
 </body>
 
 </html>
