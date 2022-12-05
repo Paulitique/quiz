@@ -40,13 +40,24 @@ public class QuizWebController {
 		UriComponents uri = UriComponentsBuilder
 				.fromHttpUrl("http://"+host)
 				.path("/api/quiz/")
-				.queryParam("name", name)
-				.queryParam("description", description)
 				.build().encode();
 				
+
+		String jsonQuiz = "";
+		Map<String, Object> jsonMap = new HashMap<String, Object>();
+		jsonMap.put("name", name);
+		jsonMap.put("description", description);
+		try {
+			jsonQuiz = new ObjectMapper().writeValueAsString(jsonMap);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		HttpHeaders h = new HttpHeaders();
+		h.setContentType(MediaType.APPLICATION_JSON);
 		String res = new RestTemplate()
 				.postForObject(uri.toUriString(), 
-				new HttpEntity<String>("", new HttpHeaders()), String.class);
+				new HttpEntity<String>(jsonQuiz, h),
+				String.class);
 		
 		String message = res.contains("id")?"ok":"ko";
 		return "redirect:/quiz/new?status="+message+"#create";
@@ -119,12 +130,21 @@ public class QuizWebController {
 		UriComponents uri = UriComponentsBuilder
 				.fromHttpUrl("http://"+host)
 				.path("/api/quiz/")
-				.queryParam("id", id)
-				.queryParam("name", name)
-				.queryParam("description", description)
 				.build().encode();
 		
-		new RestTemplate().put(uri.toUriString(), "");
+		String jsonQuiz = "";
+		Map<String, Object> jsonMap = new HashMap<String, Object>();
+		jsonMap.put("id", id);
+		jsonMap.put("name", name);
+		jsonMap.put("description", description);
+		try {
+			jsonQuiz = new ObjectMapper().writeValueAsString(jsonMap);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		HttpHeaders h = new HttpHeaders();
+		h.setContentType(MediaType.APPLICATION_JSON);
+		new RestTemplate().put(uri.toUriString(), new HttpEntity<String>(jsonQuiz, h));		
 		
 		return "redirect:/quiz/all?status=Modification%20quiz%20ok#list";
 	}
