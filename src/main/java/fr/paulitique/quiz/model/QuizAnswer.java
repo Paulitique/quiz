@@ -1,5 +1,7 @@
 package fr.paulitique.quiz.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,18 +18,19 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public abstract class Answer {
+public class QuizAnswer {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@Column(name="ANSWER_TEXT")
+	@Column(name="QUIZ_ANSWER_ID")
 	private Integer id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ANSWER_F_QUESTION_ID", nullable = true)
-	private Question question;
-
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ANSWER_F_QUIZ_ANSWER_ID", nullable = true)
-	private QuizAnswer quizAnswer;
+	private List<Answer> answers;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "QUIZ_ANSWER_F_QUIZ_ID")
+	private Quiz quiz;
+	
 }

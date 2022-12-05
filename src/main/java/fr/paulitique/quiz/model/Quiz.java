@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class Quiz {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
-	@Column(name="QUIZ_TEXT")
+	@Column(name="QUIZ_ID")
 	private Integer id;
 	
 	@Column(name="QUIZ_NAME")
@@ -34,6 +35,9 @@ public class Quiz {
 	@JoinColumn(name = "QUESTION_F_QUIZ_ID", nullable = true)
 	private List<Question> questions;
 	
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(name = "QUIZ_ANSWER_F_QUIZ_ID")
+	private List<QuizAnswer> quizAnswers;
 	//TODO: Add categories
 	// private Iterable<Category> categories;
 }
