@@ -56,10 +56,10 @@
         </div>
     </header>
     <!-- Create Section-->
-    <section class="page-section min-vh-100" id="list">
+    <section class="page-section min-vh-100" id="view">
         <div class="container">
             <!-- About Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-white">A propos</h2>
+            <h2 class="page-section-heading text-center text-uppercase" th:text="${quiz.name}"></h2>
             <!-- Icon Divider-->
             <div class="divider-custom divider-light">
                 <div class="divider-custom-line"></div>
@@ -67,37 +67,30 @@
                 <div class="divider-custom-line"></div>
             </div>
             <!-- About Section Content-->
-			<div class="alert alert-primary" th:if="${status}!=null" role="alert">
-				<span th:text="${status}"></span>
-			</div>
-			<div class="row row-cols-1 row-cols-md-3 g-4" >
-				
-				<div class="col" th:each="quiz: ${quizList}">
-					<div class="card">
-						<div class="card-body">
-							<h5 class="card-title" th:text="${#strings.replace(quiz.name, '%20', ' ')}"></h5>
-							<p class="card-text" th:text="${quiz.description}"></p>
-							<a th:href="@{'/quiz/view?id=' + ${quiz.id} + '#view'}" 
-							class="btn btn-secondary d-flex justify-content-center">View</a>
-						</div>
-						<div class="card-footer d-flex justify-content-between">
-							<a th:href="@{'/quiz/update?id=' + ${quiz.id} + '#update'}"
-                                title="Modifier">
-                                <small class="text-muted"><i class="fas fa-edit"></i></small>
-                            </a>
-							<a th:href="@{'/quiz/compose?id=' + ${quiz.id} + '#compose'}"
-                                title="Composer">
-                                <small class="text-muted"><i class="fas fa-plus-square"></i></small>
-                            </a>
-							<a th:href="@{'/quiz/delete?id=' + ${quiz.id}}"
-                                title="Supprimer">
-                                <small class="text-muted"><i class="fas fa-trash-alt"></i></small>
-                            </a>
-						</div>
+			
+			<p class="text-center fs-4" th:text="${quiz.description}"></p>
+
+			<div class="list-group mb-3">
+			
+				<a href="#view" class="list-group-item list-group-item-action" 
+				th:each="question: ${questionList}">
+					<div class="d-flex w-100 justify-content-between">
+						<h5 class="mb-1" th:text="${question.text}"></h5>
+						<small class="text-muted" th:text="${question.questionType}"></small>
 					</div>
-				</div>
+
+					<div class="list-group"
+						th:if="${question.questionType}=='UniqueChoiceQuestion'">
+						<label class="list-group-item" th:each="option: ${question.choices}">
+							<input class="form-check-input me-1" type="checkbox" value="">
+							<span th:text="${option.text}"></span>
+						</label>
+					</div>
+
+				</a>
 				
 			</div>
+
 		</div>
     </section>
     <!-- Footer-->

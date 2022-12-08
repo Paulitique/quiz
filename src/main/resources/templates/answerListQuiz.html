@@ -59,7 +59,7 @@
     <section class="page-section min-vh-100" id="list">
         <div class="container">
             <!-- About Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-white">A propos</h2>
+            <h2 class="page-section-heading text-center text-uppercase">Quiz disponibles</h2>
             <!-- Icon Divider-->
             <div class="divider-custom divider-light">
                 <div class="divider-custom-line"></div>
@@ -70,29 +70,15 @@
 			<div class="alert alert-primary" th:if="${status}!=null" role="alert">
 				<span th:text="${status}"></span>
 			</div>
-			<div class="row row-cols-1 row-cols-md-3 g-4" >
+			<div class="row row-cols-1 row-cols-md-1 g-4" >
 				
 				<div class="col" th:each="quiz: ${quizList}">
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title" th:text="${#strings.replace(quiz.name, '%20', ' ')}"></h5>
 							<p class="card-text" th:text="${quiz.description}"></p>
-							<a th:href="@{'/quiz/view?id=' + ${quiz.id} + '#view'}" 
-							class="btn btn-secondary d-flex justify-content-center">View</a>
-						</div>
-						<div class="card-footer d-flex justify-content-between">
-							<a th:href="@{'/quiz/update?id=' + ${quiz.id} + '#update'}"
-                                title="Modifier">
-                                <small class="text-muted"><i class="fas fa-edit"></i></small>
-                            </a>
-							<a th:href="@{'/quiz/compose?id=' + ${quiz.id} + '#compose'}"
-                                title="Composer">
-                                <small class="text-muted"><i class="fas fa-plus-square"></i></small>
-                            </a>
-							<a th:href="@{'/quiz/delete?id=' + ${quiz.id}}"
-                                title="Supprimer">
-                                <small class="text-muted"><i class="fas fa-trash-alt"></i></small>
-                            </a>
+							<a th:href="@{'/answer/quiz?id=' + ${quiz.id} + '#view'}" 
+							class="btn btn-secondary d-flex justify-content-center">Répondre</a>
 						</div>
 					</div>
 				</div>
