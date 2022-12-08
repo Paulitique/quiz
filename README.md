@@ -1,4 +1,4 @@
-#Projet JEE - Quiz Paulitique
+# Projet JEE - Quiz Paulitique
 
 L'objectif de cet outil est de fournir au membres de l'association Paulitique
 un moyen de générer des quiz auxquels les participants à un évènement répondront
