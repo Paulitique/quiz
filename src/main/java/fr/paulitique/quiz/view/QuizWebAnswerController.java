@@ -88,8 +88,8 @@ public class QuizWebAnswerController {
 			if(questionList.size() <= 0) {				
 				model.addAttribute("status", "Quiz Vide");
 			}else {
-				model.addAttribute("status", "Fin du quiz !");
 			}
+			model.addAttribute("status", "Fin du quiz !");
 			
 			// sauvegarde de la liste des reponses :
 			// // recuperer la liste des question sur un questionnaire
