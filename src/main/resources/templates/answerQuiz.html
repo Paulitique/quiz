@@ -70,26 +70,56 @@
 			
 			<p class="text-center fs-4" th:text="${quiz.description}"></p>
 
-			<div class="list-group mb-3">
-			
-				<a href="#view" class="list-group-item list-group-item-action" 
-				th:each="question: ${questionList}">
-					<div class="d-flex w-100 justify-content-between">
-						<h5 class="mb-1" th:text="${question.text}"></h5>
-						<small class="text-muted" th:text="${question.questionType}"></small>
-					</div>
-
-					<div class="list-group"
-						th:if="${question.questionType}=='UniqueChoiceQuestion'">
-						<label class="list-group-item" th:each="option: ${question.choices}">
-							<input class="form-check-input me-1" type="checkbox" value="">
-							<span th:text="${option.text}"></span>
-						</label>
-					</div>
-
-				</a>
-				
+			<div class="alert alert-primary" th:if="${status}!=null" role="alert">
+				<span th:text="${status}"></span>
 			</div>
+			
+			<form class="border border-primary rounded-2" method="GET"
+				th:if="${currentQuestion}!=null"
+				action="/answer/quiz">
+				<div hidden class="form-group">
+					<label for="inputId">Quiz Id</label> 
+					<input type="text" class="form-control" id="inputId"
+						aria-describedby="descriptionHelp" placeholder="Id" name="idQuiz"
+						th:value="${quiz.id}"> 
+					<small id="descriptionHelp" class="form-text text-muted"></small>
+				</div>
+				<div hidden class="form-group">
+					<label for="inputNum">Question Numero</label> 
+					<input type="text" class="form-control" id="inputNum"
+						aria-describedby="descriptionHelp" placeholder="Id" name="numQuestion"
+						th:value="${numCurrentQuestion}"> 
+					<small id="descriptionHelp" class="form-text text-muted"></small>
+				</div>
+				<div hidden class="form-group">
+					<label for="inputMove"></label> 
+					<input type="text" class="form-control" id="inputMove"
+						aria-describedby="descriptionHelp" placeholder="move" name="move"
+						value="forward"> 
+					<small id="descriptionHelp" class="form-text text-muted"></small>
+				</div>
+				<div hidden class="form-group">
+					<label for="inputId">Question Id</label> 
+					<input type="text" class="form-control" id="inputId"
+						aria-describedby="descriptionHelp" placeholder="Id" name="idQestion"
+						th:value="${currentQuestion.id}"> 
+					<small id="descriptionHelp" class="form-text text-muted"></small>
+				</div>
+				<div class="form-group mx-3 my-1" >
+					<label for="inputQuestion" th:text="${currentQuestion.text}"></label> 
+					<input type="text" class="form-control" id="inputQuestion"
+						aria-describedby="descriptionHelp" placeholder="Réponse"
+						name="answer"> 
+					<small id="QuestionHelp" class="form-text text-muted"> 
+						Réponse à la question.
+					</small>
+				</div>
+				<div class="col d-flex justify-content-evenly text-center mx-3 my-1">
+					<a th:href="@{'/answer/quiz?idQuiz=' + ${quiz.id} + '&numQuestion='+ ${numCurrentQuestion} +'&idQuestion=' + ${currentQuestion.id} + '&move=backward'}"  
+						class="btn btn-secondary">Précédant</a>
+					<button type="submit" class="btn btn-secondary">Suivant</button>
+				</div>
+			</form>
 
 		</div>
     </section>
