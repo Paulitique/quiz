@@ -56,7 +56,7 @@
         </div>
     </header>
     <!-- Create Section-->
-    <section class="page-section min-vh-100" id="view">
+    <section class="page-section min-vh-100" id="form">
         <div class="container">
             <!-- About Section Heading-->
             <h2 class="page-section-heading text-center text-uppercase" th:text="${quiz.name}"></h2>
@@ -76,7 +76,7 @@
 			
 			<form class="border border-primary rounded-2" method="GET"
 				th:if="${currentQuestion}!=null"
-				action="/answer/quiz">
+				action="/answer/quiz#form">
 				<div hidden class="form-group">
 					<label for="inputId">Quiz Id</label> 
 					<input type="text" class="form-control" id="inputId"
