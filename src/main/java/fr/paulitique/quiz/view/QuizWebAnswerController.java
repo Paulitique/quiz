@@ -86,9 +86,9 @@ public class QuizWebAnswerController {
 		if(numCurrentQuestion.equals("-1")) {
 			
 			if(questionList.size() <= 0) {				
-				model.addAttribute("status", "Quiz empty");
+				model.addAttribute("status", "Quiz Vide");
 			}else {
-				model.addAttribute("status", "Quiz finished");
+				model.addAttribute("status", "Fin du quiz !");
 			}
 			
 			// sauvegarde de la liste des reponses :
@@ -102,7 +102,7 @@ public class QuizWebAnswerController {
 			ArrayList<Object> answers = new ArrayList<Object>();
 			questionList.forEach( q -> {
 				int questionId = q.getId();
-				System.out.println(questionId);
+				//System.out.println(questionId);
 				// get the answer
 				Object[] answerObject = new RestTemplate()
 						.getForObject(UriComponentsBuilder
@@ -118,15 +118,14 @@ public class QuizWebAnswerController {
 				answers.add(answerObject.length>0?answerObject[0]:null);
 			} );
 			jsonMapAnswer.put("answerList", answers);
-			System.out.println("Ajout d'une nouvelle liste de responses");
 			
 			try {
 				jsonAnswerList = new ObjectMapper().writeValueAsString(jsonMapAnswer);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
-			// save the quiz answer
-			System.out.println(jsonAnswerList);
+			// save the quiz answer (jsonAnswerList)
+			//System.out.println(jsonAnswerList);
 			
 			HttpHeaders h = new HttpHeaders();
 			h.setContentType(MediaType.APPLICATION_JSON);
@@ -216,6 +215,53 @@ public class QuizWebAnswerController {
 		model.addAttribute("numCurrentQuestion", numCurrentQuestion);
 		
 		return "answerQuiz";
+	}
+	
+	@GetMapping("/answer/view/quiz")
+	public String viewQuizAnswer(
+			@RequestParam(name = "idQuiz", required = true) String idQuiz,
+			@RequestParam(name = "status", required = false) String status, 
+			Model model) {
+
+		UriComponents uri = UriComponentsBuilder
+				.fromHttpUrl(API_ENDPONIT)
+				.path("/quiz/")
+				.path(idQuiz)
+				.build().encode();
+
+		Object res = new RestTemplate().getForObject(uri.toUriString(), Object.class);
+		model.addAttribute("quiz", res);
+
+		HashMap<Object, ArrayList<Object>> mapQuestionAnswers = new HashMap<Object, ArrayList<Object>>();
+		UriComponents questionsUri = UriComponentsBuilder
+				.fromHttpUrl(API_ENDPONIT)
+				.path("/quiz/")
+				.path(idQuiz)
+				.path("/question/all")
+				.build().encode();
+
+		QuestionDTO[] questions = new RestTemplate().getForObject(questionsUri.toString(), QuestionDTO[].class);
+		for(int i=0;i<questions.length; i++) {
+			
+			Object[] answerObject = new RestTemplate()
+					.getForObject(UriComponentsBuilder
+							.fromHttpUrl(API_ENDPONIT)
+							.path("/quiz/")
+							.path(idQuiz)
+							.path("/question/")
+							.path(questions[i].getId()+"")
+							.path("/answer/all")
+							.build().encode()
+							.toUriString(), Object[].class);
+			
+			ArrayList<Object> answers = new ArrayList<Object>(Arrays.asList(answerObject));
+			mapQuestionAnswers.put(questions[i], answers);
+		}
+		
+		model.addAttribute("questionAnswers", mapQuestionAnswers);
+
+		
+		return "viewQuizAnswer";
 	}
 
 }
