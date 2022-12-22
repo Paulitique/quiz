@@ -77,8 +77,12 @@
 						<div class="card-body">
 							<h5 class="card-title" th:text="${#strings.replace(quiz.name, '%20', ' ')}"></h5>
 							<p class="card-text" th:text="${quiz.description}"></p>
-							<a th:href="@{'/answer/quiz?idQuiz=' + ${quiz.id} + '#view'}" 
-							class="btn btn-secondary d-flex justify-content-center">Répondre</a>
+							<div class="d-flex justify-content-evenly">
+								<a th:href="@{'/answer/quiz?idQuiz=' + ${quiz.id} + '#view'}" 
+								class="btn btn-secondary d-flex justify-content-center">Répondre</a>
+								<a th:href="@{'/answer/view/quiz?idQuiz=' + ${quiz.id} + '#view'}" 
+								class="btn btn-secondary d-flex justify-content-center">Voir les réponses</a>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -23,8 +23,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.paulitique.quiz.dto.QuestionDTO;
-import fr.paulitique.quiz.model.Question;
-import fr.paulitique.quiz.dao.*;
 
 
 @Controller
@@ -91,7 +89,57 @@ public class QuizWebAnswerController {
 				model.addAttribute("status", "Quiz empty");
 			}else {
 				model.addAttribute("status", "Quiz finished");
-			}			
+			}
+			
+			// sauvegarde de la liste des reponses :
+			// // recuperer la liste des question sur un questionnaire
+			// // recuperer pour chaque question la reponse associee
+			// poster la liste des reponses
+			
+			String jsonAnswerList = "";
+			HashMap<String, Object> jsonMapAnswer = new HashMap<String, Object>();
+			
+			ArrayList<Object> answers = new ArrayList<Object>();
+			questionList.forEach( q -> {
+				int questionId = q.getId();
+				System.out.println(questionId);
+				// get the answer
+				Object[] answerObject = new RestTemplate()
+						.getForObject(UriComponentsBuilder
+								.fromHttpUrl(API_ENDPONIT)
+								.path("/quiz/")
+								.path(idQuiz)
+								.path("/question/")
+								.path(questionId+"")
+								.path("/answer/all")
+								.build().encode()
+								.toUriString(), Object[].class);
+				
+				answers.add(answerObject.length>0?answerObject[0]:null);
+			} );
+			jsonMapAnswer.put("answerList", answers);
+			System.out.println("Ajout d'une nouvelle liste de responses");
+			
+			try {
+				jsonAnswerList = new ObjectMapper().writeValueAsString(jsonMapAnswer);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			// save the quiz answer
+			System.out.println(jsonAnswerList);
+			
+			HttpHeaders h = new HttpHeaders();
+			h.setContentType(MediaType.APPLICATION_JSON);
+			new RestTemplate().postForObject(
+					UriComponentsBuilder
+					.fromHttpUrl(API_ENDPONIT)
+					.path("/quiz/")
+					.path(idQuiz)
+					.path("/answer")
+					.build().encode()
+					.toUriString(), 
+					new HttpEntity<String>(jsonAnswerList, h),
+					String.class);
 			
 		}else if(numQuestion.equals("")) {
 			if(questionList.size()>0) {
