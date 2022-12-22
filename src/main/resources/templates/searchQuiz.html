@@ -56,71 +56,63 @@
         </div>
     </header>
     <!-- Create Section-->
-    <section class="page-section min-vh-100" id="view">
+    <section class="page-section min-vh-100" id="search">
         <div class="container">
             <!-- About Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase" th:text="${quiz.name}"></h2>
+            <h2 class="page-section-heading text-center text-uppercase">Rechercher</h2>
             <!-- Icon Divider-->
             <div class="divider-custom divider-light">
                 <div class="divider-custom-line"></div>
                 <div class="divider-custom-icon"><i class="fas fa-handshake"></i></div>
                 <div class="divider-custom-line"></div>
             </div>
-            <!-- About Section Content-->
-			
-			<p class="text-center fs-4" th:text="${quiz.description}"></p>
-
-			<div class="alert alert-primary" th:if="${status}!=null" role="alert">
-				<span th:text="${status}"></span>
-			</div>
-			
-			<form class="border border-primary rounded-2" method="GET"
-				th:if="${currentQuestion}!=null"
-				action="/answer/quiz">
-				<div hidden class="form-group">
-					<label for="inputId">Quiz Id</label> 
-					<input type="text" class="form-control" id="inputId"
-						aria-describedby="descriptionHelp" placeholder="Id" name="idQuiz"
-						th:value="${quiz.id}"> 
-					<small id="descriptionHelp" class="form-text text-muted"></small>
-				</div>
-				<div hidden class="form-group">
-					<label for="inputNum">Question Numero</label> 
-					<input type="text" class="form-control" id="inputNum"
-						aria-describedby="descriptionHelp" placeholder="Id" name="numQuestion"
-						th:value="${numCurrentQuestion}"> 
-					<small id="descriptionHelp" class="form-text text-muted"></small>
-				</div>
-				<div hidden class="form-group">
-					<label for="inputMove"></label> 
-					<input type="text" class="form-control" id="inputMove"
-						aria-describedby="descriptionHelp" placeholder="move" name="move"
-						value="forward"> 
-					<small id="descriptionHelp" class="form-text text-muted"></small>
-				</div>
-				<div hidden class="form-group">
-					<label for="inputId">Question Id</label> 
-					<input type="text" class="form-control" id="inputId"
-						aria-describedby="descriptionHelp" placeholder="Id" name="idQestion"
-						th:value="${currentQuestion.id}"> 
-					<small id="descriptionHelp" class="form-text text-muted"></small>
-				</div>
-				<div class="form-group mx-3 my-1" >
-					<label for="inputQuestion" th:text="${currentQuestion.text}"></label> 
-					<input type="text" class="form-control" id="inputQuestion"
-						aria-describedby="descriptionHelp" placeholder="Réponse"
-						name="answer"> 
-					<small id="QuestionHelp" class="form-text text-muted"> 
-						Réponse à la question.
-					</small>
-				</div>
-				<div class="col d-flex justify-content-evenly text-center mx-3 my-1">
-					<a th:href="@{'/answer/quiz?idQuiz=' + ${quiz.id} + '&numQuestion='+ ${numCurrentQuestion} +'&idQuestion=' + ${currentQuestion.id} + '&move=backward'}"  
-						class="btn btn-secondary">Précédant</a>
-					<button type="submit" class="btn btn-secondary">Suivant</button>
+            <!-- Section Content-->
+			<form class="border border-primary rounded-2 mb-5" method="GET"
+				action="/quiz/search#search">
+				<div class="col d-flex mx-3 my-1">
+					<div class="form-group mx-3 my-1 w-100">
+						<label for="inputSearch">Nom de quiz</label> 
+						<input type="text" class="form-control" id="inputSearch"
+							aria-describedby="searchHelp" placeholder="Nom de quiz"
+							name="query"> 
+						<small id="searchHelp" class="form-text text-muted"> 
+							Nom ou chaine à rechercher.
+						</small>
+					</div>
+					<div class="col mx-3 my-auto">
+						<button type="submit" class="btn btn-secondary">Rechercher</button>
+					</div>
 				</div>
 			</form>
-
+			
+			<div class="row row-cols-1 row-cols-md-3 g-4" >
+				
+				<div class="col" th:each="quiz: ${quizList}">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title" th:text="${#strings.replace(quiz.name, '%20', ' ')}"></h5>
+							<p class="card-text" th:text="${quiz.description}"></p>
+							<a th:href="@{'/quiz/view?id=' + ${quiz.id} + '#view'}" 
+							class="btn btn-secondary d-flex justify-content-center">View</a>
+						</div>
+						<div class="card-footer d-flex justify-content-between">
+							<a th:href="@{'/quiz/update?id=' + ${quiz.id} + '#update'}"
+                                title="Modifier">
+                                <small class="text-muted"><i class="fas fa-edit"></i></small>
+                            </a>
+							<a th:href="@{'/quiz/compose?id=' + ${quiz.id} + '#compose'}"
+                                title="Composer">
+                                <small class="text-muted"><i class="fas fa-plus-square"></i></small>
+                            </a>
+							<a th:href="@{'/quiz/delete?id=' + ${quiz.id}}"
+                                title="Supprimer">
+                                <small class="text-muted"><i class="fas fa-trash-alt"></i></small>
+                            </a>
+						</div>
+					</div>
+				</div>
+				
+			</div>
 		</div>
     </section>
     <!-- Footer-->
