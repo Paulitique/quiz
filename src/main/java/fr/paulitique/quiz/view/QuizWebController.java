@@ -187,6 +187,7 @@ public class QuizWebController {
 			@RequestParam(name="quizId", required=true) String quizId,
 			@RequestParam(name="questionType", required=true) String questionType,
 			@RequestParam(name="question", required=true) String question,
+			@RequestParam(name="options", required=false) String options,
 			@RequestHeader(name="Host", required=true) String host,
 			Model model) {
 		
@@ -201,6 +202,22 @@ public class QuizWebController {
 		Map<String, Object> jsonMap = new HashMap<String, Object>();
 		jsonMap.put("questionType", questionType);
 		jsonMap.put("text", question);
+		
+		if(questionType.equals("MultipleChoiceQuestion") || questionType.equals("UniqueChoiceQuestion")) {
+			Map<String, Object> optionMap = new HashMap<String, Object>();
+			String[] allOptions = options.split(",");
+			for(int i=0; i<allOptions.length; i++) optionMap.put("text", allOptions[i]);
+			String jsonOptions = "";
+			try {
+				jsonOptions = new ObjectMapper().writeValueAsString(optionMap);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			jsonMap.put("choices", jsonOptions);
+		}
+		
+		System.out.println(jsonMap.toString());
+		
 		try {
 			jsonQuestion = new ObjectMapper().writeValueAsString(jsonMap);
 		} catch (JsonProcessingException e) {
