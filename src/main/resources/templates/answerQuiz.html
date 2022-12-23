@@ -105,18 +105,54 @@
 						th:value="${currentQuestion.id}"> 
 					<small id="descriptionHelp" class="form-text text-muted"></small>
 				</div>
-				<div class="form-group mx-3 my-1" >
+				
+				<div class="form-group mx-3 my-1" 
+						th:if="${#strings.contains(currentQuestion.questionType, 'FreeQuestion')}" >
 					<label for="inputQuestion" th:text="${currentQuestion.text}"></label> 
 					<input type="text" class="form-control" id="inputQuestion"
 						aria-describedby="descriptionHelp" placeholder="Réponse"
-						name="answer"> 
+						name="answer" required> 
 					<small id="QuestionHelp" class="form-text text-muted"> 
 						Réponse à la question.
 					</small>
 				</div>
+
+				<div class="list-group mb-3"
+					th:if="${#strings.contains(currentQuestion.questionType, 'MultipleChoiceQuestion') OR #strings.contains(currentQuestion.questionType, 'UniqueChoiceQuestion')}">
+
+					<a href="#form" class="list-group-item list-group-item-action">
+						<div class="d-flex w-100 justify-content-between">
+							<h5 class="mb-1" th:text="${currentQuestion.text}"></h5>
+							<small class="text-muted" th:text="${currentQuestion.questionType}"></small>
+						</div>
+
+						<div class="list-group"
+							th:if="${#strings.contains(currentQuestion.questionType, 'MultipleChoiceQuestion')}">
+							<label class="list-group-item"
+								th:each="option: ${currentQuestion.choices}"> 
+								<input class="form-check-input me-1" type="checkbox" 
+									th:value="${option.text}" name="answer">
+								<span th:text="${option.text}"></span>
+							</label>
+						</div>
+
+						<div class="list-group"
+							th:if="${#strings.contains(currentQuestion.questionType, 'UniqueChoiceQuestion')}">
+							<label class="list-group-item"
+								th:each="option: ${currentQuestion.choices}"> 
+								<input class="form-check-input me-1" type="radio"
+									th:value="${option.text}" name="answer"> 
+								<span th:text="${option.text}"></span>
+							</label>
+						</div>
+					</a>
+
+				</div>
+
+
 				<div class="col d-flex justify-content-evenly text-center mx-3 my-1">
-					<a th:href="@{'/answer/quiz?idQuiz=' + ${quiz.id} + '&numQuestion='+ ${numCurrentQuestion} +'&idQuestion=' + ${currentQuestion.id} + '&move=backward'}"  
-						class="btn btn-secondary">Précédant</a>
+					<a th:href="@{'/answer/quiz?idQuiz=' + ${quiz.id} + '&numQuestion='+ ${numCurrentQuestion} +'&idQuestion=' + ${currentQuestion.id} + '&move=backward#form'}"  
+						class="btn btn-secondary disabled">Précédant</a>
 					<button type="submit" class="btn btn-secondary">Suivant</button>
 				</div>
 			</form>
