@@ -85,24 +85,13 @@
 						th:value="${question.id}">
 					<small id="descriptionHelp" class="form-text text-muted"></small>
 				</div>
-				<div class="form-group">
-					<label disabled for="inputId">Type question</label> <input type="text"
-						class="form-control" id="inputId"
-						aria-describedby="descriptionHelp" 
-						placeholder="Id" name=""
-						th:value="${question.questionType}">
-					<small id="descriptionHelp" class="form-text text-muted"></small>
-				</div>
 				<div class="form-group mx-3 my-1">
 				<label for="selectQuestion">Type question</label> 
-					<select class="form-select" aria-label="Type de question" 
-							id="selectQuestion" name="questionType">
-						<option value="FreeQuestion" selected>Question ouverte</option>
-						<!-- 
-						<option value="MultipleChoiceQuestion">QCM à réponses multiples</option>
-						<option value="UniqueChoiceQuestion">QCM à réponse unique</option>
-						 -->
-						<option value="NumericalQuestion">Question à réponse numérique</option>
+					<select class="form-select disabled" aria-label="Type de question" id="selectQuestion" disabled>
+						<option th:if="${question.questionType}=='FreeQuestion'" selected>Question libre</option>
+						<option th:if="${question.questionType}=='MultipleChoiceQuestion'" selected>QCM à réponses multiples</option>
+						<option th:if="${question.questionType}=='UniqueChoiceQuestion'" selected>QCM à réponse unique</option>
+						<option th:if="${question.questionType}=='NumericalQuestion'" selected>Question à réponse numérique</option>
 					</select>
 				</div>
 				<div class="form-group mx-3 my-1">
