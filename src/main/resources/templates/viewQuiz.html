@@ -59,7 +59,7 @@
     <section class="page-section min-vh-100" id="view">
         <div class="container">
             <!-- About Section Heading-->
-            <h2 class="page-section-heading text-center text-uppercase text-white">A propos</h2>
+            <h2 class="page-section-heading text-center text-uppercase" th:text="${quiz.name}"></h2>
             <!-- Icon Divider-->
             <div class="divider-custom divider-light">
                 <div class="divider-custom-line"></div>
@@ -68,8 +68,7 @@
             </div>
             <!-- About Section Content-->
 			
-			<h3 class="text-center" th:text="${quiz.name}"></h3>
-			<p class="text-center fs-4" th:text="${quiz.description}"></p>
+			<h3 class="text-center mb-3" th:text="${quiz.description}"></h3>
 
 			<div class="list-group mb-3">
 			
@@ -81,13 +80,20 @@
 					</div>
 
 					<div class="list-group"
-						th:if="${question.questionType}=='UniqueChoiceQuestion'">
+						th:if="${question.questionType}=='MultipleChoiceQuestion'">
 						<label class="list-group-item" th:each="option: ${question.choices}">
-							<input class="form-check-input me-1" type="checkbox" value="">
+							<input class="form-check-input me-1" type="checkbox" disabled>
 							<span th:text="${option.text}"></span>
 						</label>
 					</div>
-
+					
+					<div class="list-group"
+						th:if="${question.questionType}=='UniqueChoiceQuestion'">
+						<label class="list-group-item" th:each="option: ${question.choices}">
+							<input class="form-check-input me-1" type="radio" disabled>
+							<span th:text="${option.text}"></span>
+						</label>
+					</div>
 				</a>
 				
 			</div>
