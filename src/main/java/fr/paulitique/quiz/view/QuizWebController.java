@@ -1,5 +1,6 @@
 package fr.paulitique.quiz.view;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -187,6 +188,7 @@ public class QuizWebController {
 			@RequestParam(name="quizId", required=true) String quizId,
 			@RequestParam(name="questionType", required=true) String questionType,
 			@RequestParam(name="question", required=true) String question,
+			@RequestParam(name="options", required=false) String options,
 			@RequestHeader(name="Host", required=true) String host,
 			Model model) {
 		
@@ -198,14 +200,53 @@ public class QuizWebController {
 				.build().encode();
 		
 		String jsonQuestion = "";
-		Map<String, Object> jsonMap = new HashMap<String, Object>();
-		jsonMap.put("questionType", questionType);
-		jsonMap.put("text", question);
-		try {
-			jsonQuestion = new ObjectMapper().writeValueAsString(jsonMap);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+		
+		
+		// Inner class just for the choicesQuestions
+		class Kestion {
+			public String questionType;
+			public String text;
+			class Option {
+				public String text;
+				public Option(String text) {
+					this.text = text;
+				}
+			}
+			public ArrayList<Option> choices;
+			public Kestion(String type, String txt) {
+				choices = new ArrayList<Option>();
+				this.questionType = type;
+				this.text = txt;
+			}
+			public void addOption(String option) {
+				this.choices.add(new Option(option));
+			}
 		}
+		
+		if(questionType.equals("MultipleChoiceQuestion") || questionType.equals("UniqueChoiceQuestion")) {
+			
+			String[] allOptions = options.split(",");
+			Kestion k = new Kestion(questionType, question);
+			for(int i=0; i<allOptions.length; i++) k.addOption(allOptions[i]);
+			try {
+				jsonQuestion = new ObjectMapper().writeValueAsString(k);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			
+		}else{
+			
+			Map<String, Object> jsonMap = new HashMap<String, Object>();
+			jsonMap.put("questionType", questionType);
+			jsonMap.put("text", question);
+		
+			try {
+				jsonQuestion = new ObjectMapper().writeValueAsString(jsonMap);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			
+		}		
 		
 		HttpHeaders h = new HttpHeaders();
 		
