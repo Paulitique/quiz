@@ -1,5 +1,6 @@
 package fr.paulitique.quiz.view;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -203,26 +204,48 @@ public class QuizWebController {
 		jsonMap.put("questionType", questionType);
 		jsonMap.put("text", question);
 		
+		class Kestion {
+			public String questionType;
+			public String text;
+			class Option {
+				public String text;
+				public Option(String text) {
+					this.text = text;
+				}
+			}
+			public ArrayList<Option> choices;
+			
+			public Kestion(String type, String txt) {
+				choices = new ArrayList<Option>();
+				this.questionType = type;
+				this.text = txt;
+			}
+			
+			public void addOption(String option) {
+				this.choices.add(new Option(option));
+			}
+		}
+		
 		if(questionType.equals("MultipleChoiceQuestion") || questionType.equals("UniqueChoiceQuestion")) {
-			Map<String, Object> optionMap = new HashMap<String, Object>();
 			String[] allOptions = options.split(",");
-			for(int i=0; i<allOptions.length; i++) optionMap.put("text", allOptions[i]);
-			String jsonOptions = "";
+			Kestion k = new Kestion(questionType, question);
+			for(int i=0; i<allOptions.length; i++) k.addOption(allOptions[i]);
 			try {
-				jsonOptions = new ObjectMapper().writeValueAsString(optionMap);
+				jsonQuestion = new ObjectMapper().writeValueAsString(k);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
-			jsonMap.put("choices", jsonOptions);
+		}else{
+		
+			try {
+				jsonQuestion = new ObjectMapper().writeValueAsString(jsonMap);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+			
 		}
 		
-		System.out.println(jsonMap.toString());
-		
-		try {
-			jsonQuestion = new ObjectMapper().writeValueAsString(jsonMap);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+		System.out.println(jsonQuestion);
 		
 		HttpHeaders h = new HttpHeaders();
 		
