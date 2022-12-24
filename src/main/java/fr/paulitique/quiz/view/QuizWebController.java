@@ -200,10 +200,9 @@ public class QuizWebController {
 				.build().encode();
 		
 		String jsonQuestion = "";
-		Map<String, Object> jsonMap = new HashMap<String, Object>();
-		jsonMap.put("questionType", questionType);
-		jsonMap.put("text", question);
 		
+		
+		// Inner class just for the choicesQuestions
 		class Kestion {
 			public String questionType;
 			public String text;
@@ -214,19 +213,18 @@ public class QuizWebController {
 				}
 			}
 			public ArrayList<Option> choices;
-			
 			public Kestion(String type, String txt) {
 				choices = new ArrayList<Option>();
 				this.questionType = type;
 				this.text = txt;
 			}
-			
 			public void addOption(String option) {
 				this.choices.add(new Option(option));
 			}
 		}
 		
 		if(questionType.equals("MultipleChoiceQuestion") || questionType.equals("UniqueChoiceQuestion")) {
+			
 			String[] allOptions = options.split(",");
 			Kestion k = new Kestion(questionType, question);
 			for(int i=0; i<allOptions.length; i++) k.addOption(allOptions[i]);
@@ -235,7 +233,12 @@ public class QuizWebController {
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
+			
 		}else{
+			
+			Map<String, Object> jsonMap = new HashMap<String, Object>();
+			jsonMap.put("questionType", questionType);
+			jsonMap.put("text", question);
 		
 			try {
 				jsonQuestion = new ObjectMapper().writeValueAsString(jsonMap);
@@ -243,9 +246,7 @@ public class QuizWebController {
 				e.printStackTrace();
 			}
 			
-		}
-		
-		System.out.println(jsonQuestion);
+		}		
 		
 		HttpHeaders h = new HttpHeaders();
 		
