@@ -103,7 +103,7 @@
 				<div class="form-group mx-3 my-1">
 				<label for="selectQuestion">Type question</label> 
 					<select class="form-select" aria-label="Type de question" 
-							id="selectQuestion" name="questionType">
+							id="selectQuestion" name="questionType" onChange="updateFormDisplay();">
 						<option value="FreeQuestion" selected>Question ouverte</option>
 						<option value="MultipleChoiceQuestion">QCM à réponses multiples</option>
 						<option value="UniqueChoiceQuestion">QCM à réponse unique</option>
@@ -119,13 +119,13 @@
 						Question à poser.
 					</small>
 				</div>
-				<div class="form-group mx-3 my-1">
+				<div class="form-group mx-3 my-1 d-none" id="optionsInputBox">
 					<label for="inputOptions">Options</label> 
 					<input type="text" class="form-control" id="inputOptions"
 						aria-describedby="descriptionHelp" placeholder="Option 1,Option 2,Option 3"
 						name="options"> 
 					<small id="OptionHelp" class="form-text text-muted"> 
-						Options séparées par des virgules.
+						Réponses possibles séparées par des virgules.
 					</small>
 				</div>
 				<div class="col text-center mx-3 my-1">
@@ -169,6 +169,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="/assets/js/scripts.js"></script>
+    <script>
+    	function updateFormDisplay(){
+	    	var optionsInput = document.getElementById("optionsInputBox");
+	    	var typeInput = document.getElementById("selectQuestion");
+	    	if(typeInput.value == "FreeQuestion" || typeInput.value == "NumericalQuestion" ){
+	    		optionsInput.classList.remove("d-block");
+	    		optionsInput.classList.add("d-none");
+	    	}else{
+	    		optionsInput.classList.remove("d-none");
+	    		optionsInput.classList.add("d-block");
+	    	}
+    	}
+    </script>
 </body>
 
 </html>
